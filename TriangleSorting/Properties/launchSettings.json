@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "TriangleSorting": {
+      "commandName": "Project",
+      "commandLineArgs": "one 5 7 10"
+    }
+  }
+}
