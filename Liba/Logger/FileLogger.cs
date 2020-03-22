@@ -3,7 +3,7 @@ using System.IO;
 using System.Text;
 using Liba.Logger.Interfaces;
 
-namespace Liba.Logger.Implements
+namespace Liba.Logger
 {
     public class FileLogger : ILogger
     {
@@ -16,7 +16,7 @@ namespace Liba.Logger.Implements
 
         public void LogInformation(string message)
         {
-            var messageArray = Encoding.ASCII.GetBytes($"{DateTime.UtcNow.ToString("yyyy.MM.dd HH:mm:ss")} {message}{Environment.NewLine}");
+            var messageArray = Encoding.ASCII.GetBytes($"{DateTime.UtcNow:yyyy.MM.dd HH:mm:ss} {message}{Environment.NewLine}");
 
             var bufferSize = 4 * 1024;
             var blocks = Math.Ceiling((decimal)messageArray.Length / bufferSize);

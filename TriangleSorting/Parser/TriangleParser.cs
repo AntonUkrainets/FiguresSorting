@@ -14,8 +14,13 @@ namespace FiguresSorting.Parser
         public Triangle Parse(string[] args)
         {
             TryConvertToInt(args[1], out int sideA);
+            CheckPositiveNumbers(sideA);
+
             TryConvertToInt(args[2], out int sideB);
+            CheckPositiveNumbers(sideB);
+
             TryConvertToInt(args[3], out int sideC);
+            CheckPositiveNumbers(sideC);
 
             return new Triangle
                 (
@@ -26,10 +31,16 @@ namespace FiguresSorting.Parser
                 );
         }
 
-        private void TryConvertToInt(string str, out int value)
+        private void TryConvertToInt(string inputString, out int side)
         {
-            if (!int.TryParse(str, out value))
-                throw new ArgumentException($"Can't convert '{value}' to int.");
+            if (!int.TryParse(inputString, out side))
+                throw new FormatException($"Can't convert '{side}' to int.");
+        }
+
+        private void CheckPositiveNumbers(double value)
+        {
+            if (value <= 0)
+                throw new ArgumentException($"Number '{value}' must be greather than '0'");
         }
     }
 }

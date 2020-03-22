@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Liba.Logger.Interfaces;
 
-namespace Liba.Logger.Implements
+namespace Liba.Logger
 {
     public class AggregatedLogger : ILogger
     {

@@ -1,5 +1,7 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using System.Linq;
+using FiguresSorting.Business.Models;
+using FiguresSorting.ConsoleManagers;
 using FiguresSorting.Core;
 
 namespace FiguresSorting
@@ -8,21 +10,22 @@ namespace FiguresSorting
     {
         public static void Main(string[] args)
         {
-            var environment = new AppEnvironment();
+            IConsoleManager consoleManager = new ConsoleManager();
+            var environment = new AppEnvironment(consoleManager);
 
-            var figures = environment.RequestExtraFigures().ToList();
+            var figures = new List<Figure>();
 
             var figure = environment.Parse(args);
-            if (figure == null)
-                return;
-
             figures.Add(figure);
+
+            var extraFigures = environment.RequestExtraFigures();
+            figures.AddRange(extraFigures);
 
             var sortedAreas = figures
                 .OrderByDescending(f => f.Area)
                 .ToList();
 
-            sortedAreas.ForEach(f => Console.WriteLine($"[{f.Name}]: {f.Area} cm"));
+            sortedAreas.ForEach(f => consoleManager.WriteLine($"[{f.Name}]: {f.Area} cm"));
         }
     }
 }

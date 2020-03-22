@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using Liba.Logger.Implements;
 using FiguresSorting.Business.Figures;
 using FiguresSorting.Business.Models;
+using FiguresSorting.ConsoleManagers;
 using FiguresSorting.Parser;
+using Liba.Logger;
+using Liba.Logger.Interfaces;
 
 namespace FiguresSorting.Core
 {
@@ -12,14 +14,19 @@ namespace FiguresSorting.Core
         #region Private Members
 
         private readonly TriangleParser triangleParser;
-        private readonly AggregatedLogger logger;
+
+        private readonly ILogger logger;
+        private readonly IConsoleManager consoleManager;
 
         #endregion
 
         public AppEnvironment(
+            IConsoleManager consoleManager,
             string logPath = "application.log"
         )
         {
+            this.consoleManager = consoleManager;
+
             logger = new AggregatedLogger(
                 new FileLogger(logPath),
                 new ConsoleLogger()
@@ -32,9 +39,10 @@ namespace FiguresSorting.Core
         {
             if (!triangleParser.CanParse(args))
             {
-                logger.LogInformation("Input data must be in format <Name> <sideA> <sideB> <sideC>");
+                var message = "Input data must be in format <Name> <sideA> <sideB> <sideC>";
 
-                return null;
+                logger.LogInformation(message);
+                throw new ArgumentException(message);
             }
 
             var triangle = triangleParser.Parse(args);
@@ -42,15 +50,15 @@ namespace FiguresSorting.Core
             return triangle;
         }
 
-        public IEnumerable<Figure> RequestExtraFigures()
+        public Figure[] RequestExtraFigures()
         {
             var figures = new List<Figure>();
 
             while (AddNewTriangleRequired())
             {
-                var str = Console.ReadLine();
+                var inputString = consoleManager.ReadLine();
 
-                var figure = GetTriangle(str);
+                var figure = GetTriangle(inputString);
 
                 figures.Add(figure);
             }
@@ -58,9 +66,9 @@ namespace FiguresSorting.Core
             return figures.ToArray();
         }
 
-        private Triangle GetTriangle(string str)
+        private Triangle GetTriangle(string inputString)
         {
-            var digits = str.Split(' ');
+            var digits = inputString.Split(' ');
             var triangle = triangleParser.Parse(digits);
 
             return triangle;
@@ -68,9 +76,14 @@ namespace FiguresSorting.Core
 
         private bool AddNewTriangleRequired()
         {
-            Console.WriteLine("Add a new triangle?");
-            var response = Console.ReadLine();
+            consoleManager.WriteLine("Add a new triangle?");
+            var response = consoleManager.ReadLine();
 
+            return CheckAddNewTriangle(response);
+        }
+
+        private bool CheckAddNewTriangle(string response)
+        {
             return string.Equals(response, "yes", StringComparison.InvariantCultureIgnoreCase)
                 || string.Equals(response, "y", StringComparison.InvariantCultureIgnoreCase);
         }
