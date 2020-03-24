@@ -14,10 +14,8 @@ namespace FiguresSorting.Business.Figures
         public int SideC { get; private set; }
 
         private readonly Lazy<double> area;
-        public override double Area
-        {
-            get => area.Value;
-        }
+
+        public override double Area => area.Value;
 
         public Triangle(string triangleName, int sideA, int sideB, int sideC)
         {

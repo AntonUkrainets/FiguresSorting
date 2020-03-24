@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "TriangleSorting": {
+    "FiguresSorting": {
       "commandName": "Project",
       "commandLineArgs": "one 5 7 10"
     }

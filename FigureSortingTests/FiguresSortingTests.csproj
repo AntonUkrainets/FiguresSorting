@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\TriangleSorting\FiguresSorting.csproj" />
+    <ProjectReference Include="..\FiguresSorting\FiguresSorting.csproj" />
   </ItemGroup>
 
 </Project>

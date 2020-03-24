@@ -1,7 +1,6 @@
 using System;
 using FiguresSorting.Business.Figures;
 using FiguresSorting.Parser;
-using FiguresSortingTests;
 using FiguresSortingTests.Comparer;
 using Xunit;
 
